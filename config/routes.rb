@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  devise_for :users
+  root "home#index"
+  delete "/users/:id", to: "home#destroy", as: :delete_user
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
