@@ -1,7 +1,7 @@
 
 
 require "rails/all"
-
+require "bundler"
 Bundler.require(*Rails.groups)
 
 # Require the gems listed in Gemfile, including any gems

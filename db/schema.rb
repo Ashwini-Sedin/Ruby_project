@@ -10,20 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_08_25_124844) do
-  create_table "dealer_vendor_conatcts", force: :cascade do |t|
+ActiveRecord::Schema[7.2].define(version: 2026_08_27_084323) do
+  create_table "dealer_vendor_contacts", force: :cascade do |t|
     t.integer "dealer_id", null: false
-    t.integer "vendor_contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["dealer_id"], name: "index_dealer_vendor_conatcts_on_dealer_id"
-    t.index ["vendor_contact_id"], name: "index_dealer_vendor_conatcts_on_vendor_contact_id"
+    t.integer "vendor_id"
+    t.string "name"
+    t.integer "user_id"
+    t.index ["dealer_id"], name: "index_dealer_vendor_contacts_on_dealer_id"
+    t.index ["user_id"], name: "index_dealer_vendor_contacts_on_user_id"
+    t.index ["vendor_id"], name: "index_dealer_vendor_contacts_on_vendor_id"
   end
 
   create_table "dealers", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "dealers_to_vendors", force: :cascade do |t|
+    t.integer "vendor_id", null: false
+    t.integer "vendor_contact_id", null: false
+    t.integer "dealer_id", null: false
+    t.string "vendor_dealer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["dealer_id"], name: "index_dealers_to_vendors_on_dealer_id"
+    t.index ["user_id"], name: "index_dealers_to_vendors_on_user_id"
+    t.index ["vendor_contact_id"], name: "index_dealers_to_vendors_on_vendor_contact_id"
+    t.index ["vendor_id"], name: "index_dealers_to_vendors_on_vendor_id"
   end
 
   create_table "permissions", force: :cascade do |t|
@@ -80,6 +97,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_25_124844) do
     t.integer "vendor_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_vendor_contacts_on_user_id"
     t.index ["vendor_id"], name: "index_vendor_contacts_on_vendor_id"
   end
 
@@ -89,11 +108,17 @@ ActiveRecord::Schema[7.2].define(version: 2026_08_25_124844) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "dealer_vendor_conatcts", "dealers"
-  add_foreign_key "dealer_vendor_conatcts", "vendor_contacts"
+  add_foreign_key "dealer_vendor_contacts", "dealers"
+  add_foreign_key "dealer_vendor_contacts", "users"
+  add_foreign_key "dealer_vendor_contacts", "vendors"
+  add_foreign_key "dealers_to_vendors", "dealers"
+  add_foreign_key "dealers_to_vendors", "users"
+  add_foreign_key "dealers_to_vendors", "vendor_contacts"
+  add_foreign_key "dealers_to_vendors", "vendors"
   add_foreign_key "roles_to_permissions", "permissions"
   add_foreign_key "roles_to_permissions", "roles"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
+  add_foreign_key "vendor_contacts", "users"
   add_foreign_key "vendor_contacts", "vendors"
 end

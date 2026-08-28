@@ -1,23 +1,47 @@
+
+<nav class="navbar navbar-expand-lg" style="background-color: #001f3f;">
+  <div class="container-fluid">
+
+    <%= link_to "Welcome🙏",
+                root_path,
+                class: "navbar-brand text-white" %>
+
+    <% if user_signed_in? %>
+      <div class="dropdown ms-auto">
+
+        <a href="#"
+           class="nav-link text-white dropdown-toggle user-menu"
+           data-bs-toggle="dropdown"
+           aria-expanded="false">
+          <%= current_user.username %>
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end user-dropdown">
+          <li>
+           <%= link_to current_user.email, "#", class: "dropdown-item" %>
+          </li>
+
+          <li>
+            <%= link_to "Logout",
+                        destroy_user_session_path,
+                        data: { turbo_method: :delete },
+                        class: "dropdown-item" %>
+          </li>
+        </ul>
+
+      </div>
+    <% end %>
+
+  </div>
+</nav>
+
+
 <div class="container mt-5">
 
-
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="mb-1">Home</h1>
-      <p class="text-muted mb-0">
-        Welcome <strong><%= current_user.email %></strong>
-      </p>
-    </div>
-
-    <%= button_to "Logout",
-                  destroy_user_session_path,
-                  method: :delete,
-                  class: "btn btn-outline-danger" %>
-  </div>
+  
 
   <hr>
 
- 
   <div class="card shadow-sm mt-4">
     <div class="card-body">
 
@@ -49,7 +73,6 @@
 
       <% end %>
 
-     
       <%= turbo_frame_tag "users" do %>
         <%= render "users", users: @users %>
       <% end %>
